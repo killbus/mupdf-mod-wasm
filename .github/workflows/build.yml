@@ -64,7 +64,7 @@ jobs:
     
     steps:
       - name: Checkout builder repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Resolve upstream MuPDF version
         id: resolve_version
@@ -87,7 +87,7 @@ jobs:
 
       - name: Checkout MuPDF source code
         if: steps.resolve_version.outputs.skip != 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: killbus/mupdf
           ref: ${{ steps.resolve_version.outputs.ref }}
@@ -96,7 +96,7 @@ jobs:
 
       - name: Cache Emscripten SDK
         if: steps.resolve_version.outputs.skip != 'true'
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.emscripten_cache
@@ -160,7 +160,7 @@ jobs:
 
       - name: Upload build artifacts
         if: steps.resolve_version.outputs.skip != 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: mupdf-wasm-dist-${{ steps.resolve_version.outputs.version }}
           path: mupdf/platform/wasm/dist/
@@ -169,7 +169,7 @@ jobs:
       
       - name: Upload build metadata
         if: steps.resolve_version.outputs.skip != 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: mupdf-build-metadata-${{ steps.resolve_version.outputs.version }}
           path: |
@@ -179,6 +179,6 @@ jobs:
 
       - name: Generate SLSA provenance
         if: steps.resolve_version.outputs.skip != 'true'
-        uses: actions/attest-build-provenance@v1
+        uses: actions/attest-build-provenance@v3
         with:
           subject-path: 'mupdf/platform/wasm/dist/**/*'
